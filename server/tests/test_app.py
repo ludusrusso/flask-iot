@@ -10,17 +10,11 @@ def test_app_is_running(client):
     res = client.get('/')
     assert res.status_code is not None
 
-def test_login_required(client):
+def test_login_required(app, client):
     res = client.get('/')
     assert res.status_code == 401 # unauthorized
-    assert res.headers['Location'] == url_for('token.request_token')
-
-
-def test_json_response(client, app):
-    res = client.get('/', json={})
-    assert res.content_type == 'application/json'
-    assert isinstance(res.json, dict)
-    assert 'v1' in res.json.keys()
+    with app.test_request_context():
+        assert res.headers['Location'] == url_for('api_v1.login', _external=True)
 
 def test_api_v1_catalog(app):
     with app.test_request_context():

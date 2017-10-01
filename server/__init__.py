@@ -15,11 +15,13 @@ def create_app():
 
     from .api_v1 import get_catalog as v1_catalog
 
-    @app.route('/')
-    def index():
-        if request.headers['Content-Type'] == 'application/json':
-            return jsonify({'v1': v1_catalog()}), 200
-        else:
-            return '', 404
 
+    from .auth import login_required
+    from .decorators import json
+
+    @app.route('/')
+    @login_required
+    @json
+    def index():
+        return jsonify({'v1': v1_catalog()}), 200
     return app
