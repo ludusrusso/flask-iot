@@ -24,7 +24,6 @@ def app():
     app = create_app()
     app.debug = True
     app.test = True
-
     return app
 
 @pytest.fixture

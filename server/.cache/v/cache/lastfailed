@@ -1,1 +1,3 @@
-{}
+{
+  "tests/test_app.py::test_login_required": true
+}
